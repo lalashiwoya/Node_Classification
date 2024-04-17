@@ -7,6 +7,7 @@ import torch.optim as optim
 from src.train import train
 import os
 import argparse
+from src.predict import predict
 torch.manual_seed(42)
 
 
@@ -83,7 +84,7 @@ if __name__ == "__main__":
                 
                 #     model = load_model(model, model_path)
                 #     model(features, adj)
-                
+                # print(predict(features, adj, labels, test_idx, model, device))
                 print(f"End of Split {i+1}")
                 print("*"*20)
                 print("\n")
