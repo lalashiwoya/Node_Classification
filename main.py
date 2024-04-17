@@ -9,7 +9,7 @@ import os
  
 torch.manual_seed(42)
 
-config = get_config("config.toml")
+config = get_config("test_config.toml")
 cora_folder_path = config['data']['cora_folder_path']
 n_splits = config['split']['n_splits']
 test_ratio = config['split']['test_ratio']
@@ -21,6 +21,7 @@ lr = config['train']['lr']
 weight_decay = config['train']['weight_decay']
 num_epochs = config['train']['num_epochs']
 batch_size = config['train']['batch_size']
+train_history_name = config['train']["train_history_name"]
 
 
 
@@ -68,7 +69,9 @@ for i in range(n_splits):
     
     model_path = os.path.join(model_save_dir, f"{model_save_name}_split_{i+1}")
     
-    train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path)
+    train_history_path = train_history_name + f"_split_{i+1}" + ".txt"
+    train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path, 
+          train_history_path)
     
 #     model = load_model(model, model_path)
 #     model(features, adj)

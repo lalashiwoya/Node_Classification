@@ -84,3 +84,8 @@ def load_model(model, file_path):
     model.load_state_dict(torch.load(file_path))
     print(f"Model successfully Loaded from {file_path}")
     return model
+
+def write_train_history_to_file(train_loss, train_acc, test_loss, test_acc, file_path):
+    with open(file_path, "a") as file:
+        file.write(f"Train Loss: {train_loss:.3f}, Train Acc: {train_acc:.3f}, "
+                   f"Test Loss: {test_loss:.3f}, Test Acc: {test_acc:.3f}\n")
