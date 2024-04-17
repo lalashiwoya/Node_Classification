@@ -2,13 +2,24 @@ from dataset import CoraData
 import numpy as np
 import torch
 from models import GCN
-from utils import get_splits
+from utils import get_splits, get_config
 import torch.optim as optim
 from train import train
  
 torch.manual_seed(42)
 
-cora_folder_path = "cora"
+config = get_config("config.toml")
+cora_folder_path = config['data']['cora_folder_path']
+n_splits = config['split']['n_splits']
+test_ratio = config['split']['test_ratio']
+n_hidden_neurons = config['model']['n_hidden_neurons']
+dropout = config['model']['dropout']
+lr = config['train']['lr']
+weight_decay = config['train']['weight_decay']
+num_epochs = config['train']['num_epochs']
+batch_size = config['train']['batch_size']
+
+
 
 dataset = CoraData(cora_folder_path)
 
@@ -21,10 +32,6 @@ edges = dataset.edges
 n_labels = len(np.unique(labels))
 n_features = features.shape[1]
 
-n_hidden_neurons= 20
-dropout = 0.5
-n_splits = 10
-test_ratio = 0.2
 
 model = GCN(nfeat=n_features,
             nhid=n_hidden_neurons,  
@@ -39,18 +46,15 @@ adj = torch.FloatTensor(adj).to(device)
 features = torch.FloatTensor(features).to(device)
 labels = torch.LongTensor(labels).to(device)
 
-lr = 0.001
-weight_decay = 5e-4
-num_epochs = 500
-batch_size = 1000
 
 loss_func =torch.nn.CrossEntropyLoss()
 
 for i in range(n_splits):
     print("*"*20)
     print(f"Start of Split {i+1}")
+    
     model = GCN(nfeat=n_features,
-            nhid=20,  
+            nhid=n_hidden_neurons,  
             nclass=n_labels,
             dropout=dropout).to(device)
     optimizer = optim.Adam(model.parameters(),

@@ -1,10 +1,10 @@
-from typing import List, Tuple
+from typing import List, Tuple, Dict
 from numpy.typing import NDArray
 import numpy as np
 import glob
 from scipy.sparse import diags
 from sklearn.model_selection import StratifiedShuffleSplit
-
+import toml
 
 def read_file(fname: str) -> List[str]:
     data = []
@@ -65,5 +65,9 @@ def get_splits(labels, n_splits, test_ratio, random_state=42):
         all_test_idx.append(test_idx)
         
     return all_train_idx, all_test_idx
-        
+    
+def get_config(path: str) -> Dict:
+    with open(path, 'r') as toml_file:
+        data = toml.load(toml_file)
+        return data
         
