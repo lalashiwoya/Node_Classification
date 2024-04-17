@@ -2,7 +2,7 @@ from dataset import CoraData
 import numpy as np
 import torch
 from models import GCN
-from utils import get_splits, get_config
+from utils import get_splits, get_config, load_model
 import torch.optim as optim
 from train import train
 import os
@@ -50,7 +50,7 @@ features = torch.FloatTensor(features).to(device)
 labels = torch.LongTensor(labels).to(device)
 loss_func =torch.nn.CrossEntropyLoss()
 
-model_path = os.path.join(model_save_dir, model_save_name)
+
 
 for i in range(n_splits):
     print("*"*20)
@@ -66,7 +66,12 @@ for i in range(n_splits):
     train_idx = torch.LongTensor(all_train_idx[i]).to(device)
     test_idx = torch.LongTensor(all_test_idx[i]).to(device)
     
+    model_path = os.path.join(model_save_dir, f"{model_save_name}_split_{i+1}")
+    
     train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path)
+    
+#     model = load_model(model, model_path)
+#     model(features, adj)
     
     print(f"End of Split {i+1}")
     print("*"*20)
