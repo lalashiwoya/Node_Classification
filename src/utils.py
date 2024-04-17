@@ -7,6 +7,7 @@ from sklearn.model_selection import StratifiedShuffleSplit
 import toml
 import torch
 import os
+import csv
 
 def read_file(fname: str) -> List[str]:
     data = []
@@ -24,21 +25,21 @@ def get_nodes_and_edges(folder: str) -> Tuple[List[str], List[str]]:
             all_edges = read_file(file)
     return all_nodes, all_edges
 
-def parse_nodes(nodes: List[str]) -> Tuple[NDArray[np.int_], NDArray[np.float_], NDArray[np.str_]]:
+def parse_nodes(nodes: List[str]) -> Tuple[NDArray[np.str_], NDArray[np.float_], NDArray[np.str_]]:
     node_ids, node_embs, labels = [], [], []
     for data in nodes:
         elements = data.split('\t')
-        node_ids.append(int(elements[0]))
+        node_ids.append(elements[0])
         node_embs.append(elements[1:-1])
         labels.append(elements[-1])
         
     return np.array(node_ids), np.array(node_embs, dtype=np.float32), np.array(labels)
 
-def parse_edges(edges: List[str]) -> NDArray[np.int_]:
+def parse_edges(edges: List[str]) -> NDArray[np.str_]:
     all_edges = []
     for data in edges:
         element = data.split("\t")
-        all_edges.append((int(element[0]), int(element[1])))
+        all_edges.append((element[0], element[1]))
     return np.array(all_edges)
 
 def create_adj_matrix(edge_index: NDArray[np.int_]) -> NDArray[np.int_]:
@@ -89,3 +90,12 @@ def write_train_history_to_file(train_loss, train_acc, test_loss, test_acc, file
     with open(file_path, "a") as file:
         file.write(f"Train Loss: {train_loss:.3f}, Train Acc: {train_acc:.3f}, "
                    f"Test Loss: {test_loss:.3f}, Test Acc: {test_acc:.3f}\n")
+
+
+def write_preds_to_file(nodes, preds, file_path):
+    with open(file_path, 'w', newline='') as tsvfile:
+        tsv_writer = csv.writer(tsvfile, delimiter='\t')
+        tsv_writer.writerow(['paper_id', 'class_label'])
+        for node, pred in zip(nodes, preds):
+            tsv_writer.writerow([str(node), pred])
+

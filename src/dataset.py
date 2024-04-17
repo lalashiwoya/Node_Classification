@@ -10,12 +10,13 @@ import numpy as np
 class CoraData:
     def __init__(self, folder_name: str):
         self.folder_name = folder_name
-        self.nodes, self.labels, self. adj, self.features, self.edges = self._get_node_label_adj_embedding()
+        self.nodes, self.labels, self. adj, self.features, self.edges, self.labels_to_idx, self.nodes_to_idx = self._get_node_label_adj_embedding()
     
     def _categories_to_idx(self, x: NDArray[Any], mapping: Dict) -> NDArray[np.int_]:
         idx = np.vectorize(lambda key: mapping[key])(x)
         return idx
-        
+    
+  
     def _get_node_label_adj_embedding(self):
         all_nodes, all_edges = get_nodes_and_edges(self.folder_name)
         node_ids, node_embs, node_labels = parse_nodes(all_nodes)
@@ -23,7 +24,7 @@ class CoraData:
         labels_to_idx = {x: idx for idx, x in enumerate(np.unique(node_labels))}
         nodes_to_idx = {x: idx for idx, x in enumerate(node_ids)}
         
-        nodes_idx = self._categories_to_idx(node_ids, nodes_to_idx)
+        # nodes_idx = self._categories_to_idx(node_ids, nodes_to_idx)
         label_idx = self._categories_to_idx(node_labels, labels_to_idx)
         edges_idx = self._categories_to_idx(edges, nodes_to_idx)
         
@@ -32,5 +33,5 @@ class CoraData:
         
         node_embs = normalize(node_embs)
         
-        return nodes_idx, label_idx, adj, node_embs, edges_idx
+        return node_ids, label_idx, adj, node_embs, edges_idx, labels_to_idx, nodes_to_idx
 

@@ -30,7 +30,10 @@ if __name__ == "__main__":
         weight_decay = config['train']['weight_decay']
         num_epochs = config['train']['num_epochs']
         batch_size = config['train']['batch_size']
-        train_history_name = config['train']["train_history_name"]
+        train_history_dir= config['train']["train_history_dir"]
+        
+        if not os.path.exists(train_history_dir):
+                os.makedirs(train_history_dir, exist_ok=True)
 
 
 
@@ -78,7 +81,7 @@ if __name__ == "__main__":
                 
                 model_path = os.path.join(model_save_dir, f"{model_save_name}_split_{i+1}")
                 
-                train_history_path = train_history_name + f"_split_{i+1}" + ".txt"
+                train_history_path = f"{train_history_dir}/split_{i+1}.txt"
                 train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path, 
                         train_history_path)
                 
