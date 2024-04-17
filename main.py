@@ -1,10 +1,10 @@
-from dataset import CoraData
+from src.dataset import CoraData
 import numpy as np
 import torch
-from models import GCN
-from utils import get_splits, get_config, load_model
+from src.models import GCN
+from src.utils import get_splits, get_config, load_model
 import torch.optim as optim
-from train import train
+from src.train import train
 import os
 import argparse
 torch.manual_seed(42)
@@ -14,7 +14,7 @@ if __name__ == "__main__":
         parser = argparse.ArgumentParser(description="""Train a model using parameters 
                                          specified in a configuration TOML file.""")  
         
-        parser.add_argument("--config_path", type=str, help="Location of config file")
+        parser.add_argument("--config_path", type=str, help="Location of config file", required=True)
         args = parser.parse_args()
         config = get_config(args.config_path)
         
