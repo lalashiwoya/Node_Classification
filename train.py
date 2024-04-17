@@ -1,5 +1,6 @@
 
 import torch
+from utils import save_model
 
 
 def create_batches(indices, batch_size):
@@ -24,13 +25,16 @@ def train_epoch(node_embs, adj, labels, idx, model, optimizer, loss_func, batch_
          
     
 
-def train(node_embs, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, print_loss_interval = 100):
+def train(node_embs, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, 
+          model_path, 
+          print_loss_interval = 100):
     for epoch in range(num_epochs):
         train_epoch(node_embs, adj, labels, train_idx, model, optimizer, loss_func, batch_size, device)
+        train_loss, train_acc = compute_loss_accuracy(node_embs, adj, labels, train_idx, model, loss_func, device)
+        test_loss, test_acc = compute_loss_accuracy(node_embs, adj, labels, test_idx, model, loss_func, device)
+        save_model(model, model_path)
         
         if(epoch+1)%print_loss_interval == 0 or epoch == 0:
-            train_loss, train_acc = compute_loss_accuracy(node_embs, adj, labels, train_idx, model, loss_func, device)
-            test_loss, test_acc = compute_loss_accuracy(node_embs, adj, labels, test_idx, model, loss_func, device)
             print('Epochs: {}, Train Loss: {:.3f}, Train Acc: {:.3f}, Test Loss: {:.3f}, Test Acc: {:.3f}'.format(epoch, 
                                                                                                                 train_loss, 
                                                                                                                 train_acc, 

@@ -5,6 +5,7 @@ from models import GCN
 from utils import get_splits, get_config
 import torch.optim as optim
 from train import train
+import os
  
 torch.manual_seed(42)
 
@@ -14,6 +15,8 @@ n_splits = config['split']['n_splits']
 test_ratio = config['split']['test_ratio']
 n_hidden_neurons = config['model']['n_hidden_neurons']
 dropout = config['model']['dropout']
+model_save_dir = config['model']['model_save_dir']
+model_save_name = config['model']['model_save_name']
 lr = config['train']['lr']
 weight_decay = config['train']['weight_decay']
 num_epochs = config['train']['num_epochs']
@@ -45,9 +48,9 @@ all_train_idx, all_test_idx = get_splits(labels, n_splits, test_ratio)
 adj = torch.FloatTensor(adj).to(device)
 features = torch.FloatTensor(features).to(device)
 labels = torch.LongTensor(labels).to(device)
-
-
 loss_func =torch.nn.CrossEntropyLoss()
+
+model_path = os.path.join(model_save_dir, model_save_name)
 
 for i in range(n_splits):
     print("*"*20)
@@ -63,7 +66,7 @@ for i in range(n_splits):
     train_idx = torch.LongTensor(all_train_idx[i]).to(device)
     test_idx = torch.LongTensor(all_test_idx[i]).to(device)
     
-    train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device)
+    train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path)
     
     print(f"End of Split {i+1}")
     print("*"*20)

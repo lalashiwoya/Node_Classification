@@ -5,6 +5,8 @@ import glob
 from scipy.sparse import diags
 from sklearn.model_selection import StratifiedShuffleSplit
 import toml
+import torch
+import os
 
 def read_file(fname: str) -> List[str]:
     data = []
@@ -70,4 +72,15 @@ def get_config(path: str) -> Dict:
     with open(path, 'r') as toml_file:
         data = toml.load(toml_file)
         return data
-        
+
+def save_model(model, file_path):
+    directory = os.path.dirname(file_path)
+    if not os.path.exists(directory):
+        os.makedirs(directory, exist_ok=True)
+    torch.save(model.state_dict(), file_path)
+    print(f"Model successfully saved to {file_path}")
+
+def load_model(model, file_path):
+    model.load_state_dict(torch.load(file_path))
+    print(f"Model successfully Loaded from {file_path}")
+    return model
