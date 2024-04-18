@@ -1,3 +1,5 @@
 __pycache__
 *.ipynb
 *.md
+models/
+train_history*/

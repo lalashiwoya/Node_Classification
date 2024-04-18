@@ -3,3 +3,4 @@ cora
 __pycache__
 models
 train_history*
+!plot.ipynb
