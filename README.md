@@ -20,7 +20,6 @@ The Cora dataset is split into training and testing sets using 10-Fold stratifie
 
 During training:
 - The model updates using only the training index in each batch.
-- Loss and accuracy are reported every 100 epochs.
 - Training history (loss and accuracy on train and test sets) is saved in the `train_history` folder.
 - Plots of training progress are saved in the `train_history_plots` folder.
 
