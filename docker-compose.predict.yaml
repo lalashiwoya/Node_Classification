@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  predict:
+    build: 
+      context: .
+      dockerfile: Dockerfile.predict
+    volumes:
+      - .:/app/predict

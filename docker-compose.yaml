@@ -1,8 +1,9 @@
 version: '3.8'
 services:
-  app:
-    build: .
-    image: node
+  train_and_predict:
+    build: 
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - .:/app  
+      - .:/app/train_and_predict
    

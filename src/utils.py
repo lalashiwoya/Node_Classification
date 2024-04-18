@@ -102,6 +102,7 @@ def write_preds_to_file(nodes, preds, file_path):
         tsv_writer.writerow(['paper_id', 'class_label'])
         for node, pred in zip(nodes, preds):
             tsv_writer.writerow([str(node), pred])
+        print(f"Predictions saved at {file_path}")
 
 def get_loss_acc_from_txt_file(file_name):
     with open(file_name, "r") as file:

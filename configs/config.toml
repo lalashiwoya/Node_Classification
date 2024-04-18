@@ -14,8 +14,8 @@ model_save_name = "model"
 [train]
 lr = 0.001
 weight_decay = 5e-4
-num_epochs = 500
-batch_size = 1000
+num_epochs = 700
+batch_size = 1200
 train_history_dir = "train_history"
 print_history = true
 plot_history = true

@@ -8,7 +8,7 @@ test_ratio = 0.2
 [model]
 n_hidden_neurons= 20
 dropout = 0.5
-model_save_dir = "models"
+model_save_dir = "test_models"
 model_save_name = "model"
 
 [train]
@@ -16,7 +16,7 @@ lr = 0.001
 weight_decay = 5e-4
 num_epochs = 5
 batch_size = 1000
-train_history_dir = "train_history"
+train_history_dir = "trial_train_history"
 print_history = true
 plot_history = true
-train_history_plot_dir = "train_history_plots"
+train_history_plot_dir = "trail_train_history_plots"

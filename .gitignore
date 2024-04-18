@@ -1,6 +1,7 @@
 *.ipynb
 cora
 __pycache__
-models
+models/*
 train_history*
 !plot.ipynb
+!models/model_split_1

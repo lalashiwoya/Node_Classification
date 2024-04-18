@@ -16,7 +16,7 @@ def create_batches(indices, batch_size):
 def train_epoch(node_embs, adj, labels, idx, model, optimizer, loss_func, batch_size, device):
     model.train()
     for idx in create_batches(idx, batch_size):
-        idx = torch.LongTensor(idx).to(device)
+        idx = torch.tensor(idx).to(device)
         optimizer.zero_grad()
         output = model(node_embs, adj).to(device)
         loss = loss_func(output[idx], labels[idx])
@@ -59,12 +59,12 @@ def compute_loss_accuracy(node_embs, adj, labels, idx, model, loss_func, device)
      correct = 0
      with torch.no_grad():
         
-        idx = torch.LongTensor(idx).to(device)
+        idx = torch.tensor(idx, dtype=torch.long).to(device)
         output = model(node_embs, adj).to(device)
         loss = loss_func(output[idx], labels[idx])
         total_loss += loss.item()
         preds = output[idx].max(1)[1].type_as(labels[idx])
-        correct += preds.eq(labels[idx]).double().sum()
+        correct += preds.eq(labels[idx]).float().sum()
         num_batches += 1
     
         acc = correct / len(idx)
