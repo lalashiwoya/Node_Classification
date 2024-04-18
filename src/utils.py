@@ -142,8 +142,8 @@ def plot_train_process(train_loss, train_acc, test_loss, test_acc, title):
     
     return fig
 
-def plot_all_training_on_all_splits(folder, save_image_dir):
-    files = glob.glob(f"{folder}/*.txt")
+def plot_all_training_on_all_splits(train_history_folder, save_image_dir):
+    files = glob.glob(f"{train_history_folder}/*.txt")
     if not os.path.exists(save_image_dir):
         os.makedirs(save_image_dir)
         
