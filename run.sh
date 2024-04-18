@@ -21,7 +21,7 @@ fi
 
 
 echo "Starting training..."
-python train.py --config_path configs/test_config.toml
+python train.py --config_path configs/config.toml
 
 echo "Starting prediction..."
 python predict.py --config_path configs/pred_config.toml

@@ -13,7 +13,7 @@ Data for the Cora dataset will be automatically downloaded if not present in a f
 The GCN model is defined with two graph convolutional layers. The first layer transforms input features to a hidden layer with 20 neurons, followed by a dropout layer for regularization, and a second graph convolutional layer that outputs the class scores.
 
 ### 3. Training Process
-The Cora dataset is split into training and testing sets using stratified sampling to maintain label distribution across splits. Each split uses 80% of the data for training and 20% for testing.
+The Cora dataset is split into training and testing sets using stratified sampling to ensures that the label distribution is consistent between the train and test sets, which is crucial given the label imbalance in the dataset. Each split uses 80% of the data for training and 20% for testing.
 
 During training:
 - The model updates only using the training index in each batch.
