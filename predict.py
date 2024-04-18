@@ -8,6 +8,8 @@ import torch
 from src.utils import write_preds_to_file
 import argparse
 
+torch.manual_seed(42)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="""Make predictions using parameters 
                                          specified in a configuration TOML file.""")  

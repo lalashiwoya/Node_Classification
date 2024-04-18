@@ -8,6 +8,7 @@ import toml
 import torch
 import os
 import csv
+import matplotlib.pyplot as plt
 
 def read_file(fname: str) -> List[str]:
     data = []
@@ -86,11 +87,14 @@ def load_model(model, file_path):
     print(f"Model successfully Loaded from {file_path}")
     return model
 
-def write_train_history_to_file(train_loss, train_acc, test_loss, test_acc, file_path):
-    with open(file_path, "a") as file:
-        file.write(f"Train Loss: {train_loss:.3f}, Train Acc: {train_acc:.3f}, "
-                   f"Test Loss: {test_loss:.3f}, Test Acc: {test_acc:.3f}\n")
-
+def write_train_history_to_file(train_loss, train_acc, test_loss, test_acc, file_path, mode="a"):
+    if train_loss is not None and train_acc is not None and test_loss is not None and test_acc is not None:
+        with open(file_path, mode) as file:
+            file.write(f"Train Loss: {train_loss:.3f}, Train Acc: {train_acc:.3f}, "
+                       f"Test Loss: {test_loss:.3f}, Test Acc: {test_acc:.3f}\n")
+    else:
+        with open(file_path, mode) as file:
+            file.write("")
 
 def write_preds_to_file(nodes, preds, file_path):
     with open(file_path, 'w', newline='') as tsvfile:
@@ -98,4 +102,55 @@ def write_preds_to_file(nodes, preds, file_path):
         tsv_writer.writerow(['paper_id', 'class_label'])
         for node, pred in zip(nodes, preds):
             tsv_writer.writerow([str(node), pred])
+
+def get_loss_acc_from_txt_file(file_name):
+    with open(file_name, "r") as file:
+        data = file.readlines()
+        
+    train_loss, test_loss,train_acc, test_acc = [], [], [], []
+
+
+    for line in data:
+        parts = line.strip().split(", ")
+        train_loss += [float(parts[0].split(": ")[1])]
+        train_acc += [float(parts[1].split(": ")[1])]
+        test_loss += [float(parts[2].split(": ")[1])]
+        test_acc += [float(parts[3].split(": ")[1])]
+    
+    return train_loss, test_loss ,train_acc, test_acc
+            
+def plot_train_process(train_loss, train_acc, test_loss, test_acc, title):
+    fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+    axs[0].plot(train_loss, label='Train Loss', marker='o')
+    axs[0].plot(test_loss, label='Test Loss', marker='o')
+    axs[0].set_xlabel('Step')
+    axs[0].set_ylabel('Loss')
+    axs[0].set_title('Train and Test Losses')
+    axs[0].legend()
+    axs[0].grid(True)
+
+
+    axs[1].plot(train_acc, label='Train Acc', marker='o')
+    axs[1].plot(test_acc, label='Test Acc', marker='o')
+    axs[1].set_xlabel('Step')
+    axs[1].set_ylabel('Accuracy')
+    axs[1].set_title('Train and Test Accuracies')
+    axs[1].legend()
+    axs[1].grid(True)
+
+    plt.suptitle(title, fontsize=16)
+    
+    return fig
+
+def plot_all_training_on_all_splits(folder, save_image_dir):
+    files = glob.glob(f"{folder}/*.txt")
+    if not os.path.exists(save_image_dir):
+        os.makedirs(save_image_dir)
+        
+    for file in files:
+        train_loss, test_loss ,train_acc, test_acc = get_loss_acc_from_txt_file(file)
+        idx_split = file.split("/")[-1].split('_')[-1].split('.')[0]
+        title = f"Split {idx_split}"
+        fig = plot_train_process(train_loss, train_acc, test_loss, test_acc, title)
+        fig.savefig(f'{save_image_dir}/{title}.png')
 

@@ -28,6 +28,7 @@ def train_epoch(node_embs, adj, labels, idx, model, optimizer, loss_func, batch_
 def train(node_embs, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, 
           model_path, 
           train_history_path,
+          print_history,
           print_loss_interval = 100):
     best_test_acc = 0
     for epoch in range(num_epochs):
@@ -35,7 +36,8 @@ def train(node_embs, adj, labels, train_idx, test_idx, model, optimizer, loss_fu
         train_loss, train_acc = compute_loss_accuracy(node_embs, adj, labels, train_idx, model, loss_func, device)
         test_loss, test_acc = compute_loss_accuracy(node_embs, adj, labels, test_idx, model, loss_func, device)
         
-        write_train_history_to_file(train_loss=train_loss, train_acc=train_acc, test_loss=test_loss, test_acc=test_acc, 
+        if print_history:
+            write_train_history_to_file(train_loss=train_loss, train_acc=train_acc, test_loss=test_loss, test_acc=test_acc, 
                                    file_path = train_history_path)
         
         if best_test_acc < test_acc:

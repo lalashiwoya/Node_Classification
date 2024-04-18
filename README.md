@@ -1,6 +1,16 @@
-# cora_node_classification
+# Node Classification with Graph Convolutional Network (GCN): Cora Dataset
+
+### 1. Run with Conda
+
+```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
+pip install --no-cache-dir -r requirements.txt
 chmod +x run.sh
-docker build -t foo . && docker run -it foo
+./run.sh
+```
+
+### 2. Run with Docker
+```bash
 docker-compose up
+```

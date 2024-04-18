@@ -2,7 +2,7 @@ from src.dataset import CoraData
 import numpy as np
 import torch
 from src.models import GCN
-from src.utils import get_splits, get_config, load_model
+from src.utils import get_splits, get_config, load_model, write_train_history_to_file, plot_all_training_on_all_splits
 import torch.optim as optim
 from src.train import train
 import os
@@ -31,6 +31,9 @@ if __name__ == "__main__":
         num_epochs = config['train']['num_epochs']
         batch_size = config['train']['batch_size']
         train_history_dir= config['train']["train_history_dir"]
+        print_history = config['train']["print_history"]
+        plot_history = config['train']["plot_history"]
+        train_history_plot_dir = config['train']["train_history_plot_dir"]
         
         if not os.path.exists(train_history_dir):
                 os.makedirs(train_history_dir, exist_ok=True)
@@ -69,6 +72,7 @@ if __name__ == "__main__":
                 print("*"*20)
                 print(f"Start of Split {i+1}")
                 
+                
                 model = GCN(nfeat=n_features,
                         nhid=n_hidden_neurons,  
                         nclass=n_labels,
@@ -81,16 +85,21 @@ if __name__ == "__main__":
                 
                 model_path = os.path.join(model_save_dir, f"{model_save_name}_split_{i+1}")
                 
-                train_history_path = f"{train_history_dir}/split_{i+1}.txt"
+                if print_history:
+                        train_history_path = f"{train_history_dir}/split_{i+1}.txt"
+                        write_train_history_to_file(None, None, None, None, train_history_path, mode='w')
                 train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path, 
-                        train_history_path)
+                        train_history_path, print_history)
                 
+                print("eee")
                 #     model = load_model(model, model_path)
                 #     model(features, adj)
                 # print(predict(features, adj, labels, test_idx, model, device))
                 print(f"End of Split {i+1}")
                 print("*"*20)
                 print("\n")
+        if plot_history:
+                plot_all_training_on_all_splits(train_history_dir, train_history_plot_dir)
 
 
 
