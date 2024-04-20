@@ -25,23 +25,29 @@ During training:
 
 ### 4. Running the Project (Training and Predicting)
 
-#### Configuration Setup
+#### 4.1 Configuration Setup
 All model and training parameters are defined in the `configs/config.toml` file. This configuration file allows for easy adjustment of parameters.
 
-#### Run with Conda （shell script）
-To run the project with Conda, use the following commands:
+You can run the project code within two different environments: [**Conda**](#42-run-with-conda) or [**Docker**](#43-run-with-docker).
 
+#### 4.2 Run with Conda 
+
+##### 4.2.1 Conda enviroment set up
 ```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
 pip install --no-cache-dir -r requirements.txt
+```
+You can execute the project code within the Conda environment using one of two methods: [**Shell scripts**](#422-shell-scripts) or [**Python commands**](#423-python-commands).
+
+##### 4.2.2 Shell scripts 
+```bash
 chmod +x run.sh
 ./run.sh
 ```
+##### 4.2.3 Python commands
 
-#### Run with Conda （python commands）
-
-###### If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
+If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
 
 ```bash
 # Commands to download the dataset
@@ -55,10 +61,6 @@ rm cora.tgz
 ```
 
 ```bash
-conda create -n node_cora python=3.11
-conda activate node_cora
-pip install --no-cache-dir -r requirements.txt
-
 # Training configurations are stored in configs/config.toml, which includes e.g. model hyperparameters. 
 python train.py --config_path configs/config.toml
 
@@ -70,7 +72,7 @@ python train.py --config_path configs/config.toml --cv_method "kfold"
 python predict.py --config_path configs/pred_config.toml
 ```
 
-#### Run with Docker
+#### 4.3 Run with Docker
 
 ```bash
 docker-compose up --build
@@ -81,20 +83,24 @@ docker-compose up --build
 After running the project, you can expect the following outputs, which help in evaluating the performance:
 
 #### 5.1 Prediction Outputs
-- **Paper Categories Predictions:** The predictions for the categories of papers are saved in a `prediction.tsv` file. This file contains the predicted categories for each paper in the dataset. If you only need the prediction file, you can use the trained model located in `models/model_split_1` to make predictions. Here are the instructions:
+- **Paper Categories Predictions:** The predictions for the categories of papers are saved in a `prediction.tsv` file. This file contains the predicted categories for each paper in the dataset. If you only need the prediction file and you want to skip the training porcess, you can use the trained model located in `models/model_split_1` to make predictions. Here are the instructions:
 
-##### With Conda (shell script)
+You can make the predictions using trained model within two different environments: [**Conda**](#5111-conda-environment-set-up) or [**Docker**](#512-run-with-docker).
+
+##### 5.1.1 Run with Conda (shell script)
+##### 5.1.1.1 Conda enviroment set up
 ```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
 pip install --no-cache-dir -r requirements.txt
+```
+You can make the predictions within the Conda environment using one of two methods: [**Shell scripts**](#5112-shell-script) or [**Python commands**](#5113-python-commands).
+##### 5.1.1.2 Shell script
+```bash
 chmod +x run.predict.sh
 ./run.predict.sh
 ```
-
-##### With Conda (python commands)
-###### If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
-
+##### 5.1.1.3 Python commands
 ```bash
 # Commands to download the dataset
 wget https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz
@@ -107,13 +113,10 @@ rm cora.tgz
 ```
 
 ```bash
-conda create -n node_cora python=3.11
-conda activate node_cora
-pip install --no-cache-dir -r requirements.txt
 python predict.py --config_path configs/pred_config.toml
 ```
 
-##### With Docker
+##### 5.1.2 Run with Docker
 
 ```bash
 docker-compose -f docker-compose.predict.yaml up --build
@@ -130,3 +133,12 @@ docker-compose -f docker-compose.predict.yaml up --build
 
 - **Visualization of Model Training:** Plots illustrating the training history, including loss and accuracy over epochs for each split, are saved in the `train_history_plots` folder.
 
+# Table of Contents
+- [Introducti](#introduction)
+- [Example Header](#example-header)
+
+## Introduction
+Welcome to the document. Click here to jump to the [Example Header](#example-header) section.
+
+## Example Header
+This section provides detailed information.
