@@ -101,6 +101,7 @@ chmod +x run.predict.sh
 ./run.predict.sh
 ```
 ##### 5.1.1.3 Python commands
+If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
 ```bash
 # Commands to download the dataset
 wget https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz
