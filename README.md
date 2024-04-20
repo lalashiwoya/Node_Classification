@@ -132,13 +132,3 @@ docker-compose -f docker-compose.predict.yaml up --build
 #### 5.4 Plots of Training History
 
 - **Visualization of Model Training:** Plots illustrating the training history, including loss and accuracy over epochs for each split, are saved in the `train_history_plots` folder.
-
-# Table of Contents
-- [Introducti](#introduction)
-- [Example Header](#example-header)
-
-## Introduction
-Welcome to the document. Click here to jump to the [Example Header](#example-header) section.
-
-## Example Header
-This section provides detailed information.
