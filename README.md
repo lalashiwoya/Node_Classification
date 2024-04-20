@@ -41,6 +41,19 @@ chmod +x run.sh
 
 #### Run with Conda （python commands）
 
+###### If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
+
+```bash
+# Commands to download the dataset
+wget https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz
+
+echo "Extracting the dataset..."
+tar -xzvf cora.tgz
+
+echo "Cleaning up downloaded files..."
+rm cora.tgz
+```
+
 ```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
@@ -80,6 +93,19 @@ chmod +x run.predict.sh
 ```
 
 ##### With Conda (python commands)
+###### If the dataset is not already downloaded in the `cora` folder, you can download and extract it using the following commands:
+
+```bash
+# Commands to download the dataset
+wget https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz
+
+echo "Extracting the dataset..."
+tar -xzvf cora.tgz
+
+echo "Cleaning up downloaded files..."
+rm cora.tgz
+```
+
 ```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
