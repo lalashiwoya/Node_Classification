@@ -16,8 +16,10 @@ if __name__ == "__main__":
                                          specified in a configuration TOML file.""")  
         
         parser.add_argument("--config_path", type=str, help="Location of config file", required=True)
+        parser.add_argument("--cv_method", type=str, help="Methods of splitting dataset", default="stratified")
         args = parser.parse_args()
         config = get_config(args.config_path)
+        cv_method = args.cv_method
         
         cora_folder_path = config['data']['cora_folder_path']
         n_splits = config['split']['n_splits']
@@ -59,7 +61,7 @@ if __name__ == "__main__":
 
         device = "cpu"
 
-        all_train_idx, all_test_idx = get_splits(labels, n_splits, test_ratio)
+        all_train_idx, all_test_idx = get_splits(labels, n_splits, test_ratio, cv=cv_method)
 
         adj = torch.FloatTensor(adj).to(device)
         features = torch.FloatTensor(features).to(device)
@@ -91,7 +93,6 @@ if __name__ == "__main__":
                 train(features, adj, labels, train_idx, test_idx, model, optimizer, loss_func, num_epochs, batch_size, device, model_path, 
                         train_history_path, print_history)
                 
-                print("eee")
                 #     model = load_model(model, model_path)
                 #     model(features, adj)
                 # print(predict(features, adj, labels, test_idx, model, device))

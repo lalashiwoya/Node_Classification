@@ -3,7 +3,7 @@ from numpy.typing import NDArray
 import numpy as np
 import glob
 from scipy.sparse import diags
-from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import StratifiedShuffleSplit, KFold
 import toml
 import torch
 import os
@@ -59,8 +59,13 @@ def normalize(mx: NDArray[np.int_]) -> NDArray[np.int_]:
     mx = r_mat_inv.dot(mx)
     return mx
 
-def get_splits(labels, n_splits, test_ratio, random_state=42):
-    sss = StratifiedShuffleSplit(n_splits=n_splits, test_size=test_ratio, random_state=random_state)
+def get_splits(labels, n_splits, test_ratio, cv = "stratified", random_state=42):
+    if cv == "stratified":
+        sss = StratifiedShuffleSplit(n_splits=n_splits, test_size=test_ratio, random_state=random_state)
+    elif cv == "kfold":
+        sss = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
+    else:
+        raise NotImplementedError("Available cv methods: stratified or kfold")
     sss.get_n_splits(range(len(labels)), labels)
     all_train_idx = []
     all_test_idx = []

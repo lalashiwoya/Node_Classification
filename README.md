@@ -5,7 +5,7 @@ This project implements a Graph Convolutional Network (GCN) for node classificat
 ## Project Structure
 
 ### 1. Data Preparation
-Data for the [Cora dataset](https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz) will be automatically downloaded if not present in a folder named "cora" in the current working directory. The dataset includes papers (nodes), embeddings (features), categories of papers (labels), and citation relationships (edges).
+Data for the [Cora dataset](https://linqs-data.soe.ucsc.edu/public/lbc/cora.tgz) will be automatically downloaded if not present in a folder named `cora` in the current working directory. The dataset includes papers (nodes), embeddings (features), categories of papers (labels), and citation relationships (edges).
 
 - **Adjacency Matrix Generation:** Create an adjacency matrix using the citation relationships (edges) among the papers.
 - **Normalization:** Apply normalization to both the features (embeddings) and the adjacency matrix to standardize data scales.
@@ -28,7 +28,7 @@ During training:
 #### Configuration Setup
 All model and training parameters are defined in the `configs/config.toml` file. This configuration file allows for easy adjustment of parameters.
 
-#### Run with Conda
+#### Run with Conda （shell script）
 To run the project with Conda, use the following commands:
 
 ```bash
@@ -38,6 +38,25 @@ pip install --no-cache-dir -r requirements.txt
 chmod +x run.sh
 ./run.sh
 ```
+
+#### Run with Conda （python commands）
+
+```bash
+conda create -n node_cora python=3.11
+conda activate node_cora
+pip install --no-cache-dir -r requirements.txt
+
+# Training configurations are stored in configs/config.toml, which includes e.g. model hyperparameters. 
+python train.py --config_path configs/config.toml
+
+# By default, the dataset is split using a stratified method. However, you can opt for k-fold cross-validation by specifying the `cv_method` parameter. 
+# Example command to train with k-fold cross-validation:**
+python train.py --config_path configs/config.toml --cv_method "kfold"
+
+# Configuration for predictions, such as the location of the trained model and output file name, is in configs/pred_config.toml.
+python predict.py --config_path configs/pred_config.toml
+```
+
 #### Run with Docker
 
 ```bash
@@ -51,7 +70,7 @@ After running the project, you can expect the following outputs, which help in e
 #### 5.1 Prediction Outputs
 - **Paper Categories Predictions:** The predictions for the categories of papers are saved in a `prediction.tsv` file. This file contains the predicted categories for each paper in the dataset. If you only need the prediction file, you can use the trained model located in `models/model_split_1` to make predictions. Here are the instructions:
 
-##### With Conda
+##### With Conda (shell script)
 ```bash
 conda create -n node_cora python=3.11
 conda activate node_cora
@@ -59,6 +78,15 @@ pip install --no-cache-dir -r requirements.txt
 chmod +x run.predict.sh
 ./run.predict.sh
 ```
+
+##### With Conda (python commands)
+```bash
+conda create -n node_cora python=3.11
+conda activate node_cora
+pip install --no-cache-dir -r requirements.txt
+python predict.py --config_path configs/pred_config.toml
+```
+
 ##### With Docker
 
 ```bash
