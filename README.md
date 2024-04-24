@@ -83,7 +83,7 @@ docker-compose up --build
 After running the project, you can expect the following outputs, which help in evaluating the performance:
 
 #### 5.1 Prediction Outputs
-- **Paper Categories Predictions:** The predictions for the categories of papers are saved in a `prediction.tsv` file. This file contains the predicted categories for each paper in the dataset. If you only need the prediction file and you want to skip the training porcess, you can use the trained model located in `models/model_split_1` to make predictions. Here are the instructions:
+- **Paper Categories Predictions:** The predictions for the categories of papers are saved in a `prediction.tsv` file. This file contains the predicted categories for each paper in the dataset. If you **only** need the prediction file and you want to **skip** the training porcess, you can use the trained model located in `models/model_split_1` to make predictions. Here are the instructions:
 
 You can make the predictions using trained model within two different environments: [**Conda**](#5111-conda-environment-set-up) or [**Docker**](#512-run-with-docker).
 
